@@ -1,6 +1,6 @@
 import re
 from typing import Pattern
-from flask import request, jsonify, url_for
+from flask import request, jsonify, url_for, g
 from app import db
 from app.api import bp
 #from app.api.auth import token_auth
@@ -58,7 +58,11 @@ def get_users():
 @token_auth.login_required
 def get_user(id):
     '''返回一个用户'''
+    user = User.query.get_or_404(id)
+    if(g.current_user == user):
+        return jsonify(User.query.get_or_404(id).to_dict(include_email=True))
     return jsonify(User.query.get_or_404(id).to_dict())
+
 
 @bp.route('users/<int:id>', methods=['PUT'])
 @token_auth.login_required
@@ -83,7 +87,8 @@ def update_user(id):
     if 'email' in data and data['email'] != user.email and \
             User.query.filter_by(email=data['email']).first():
         message['email'] = 'Please use a different email address.'
-
+    
+    
     if message:
          return bad_request(message)
         

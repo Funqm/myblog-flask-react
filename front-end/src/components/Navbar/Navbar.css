@@ -1,0 +1,23 @@
+.navbar {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    background-color: #fff;
+}
+.navbar-left {
+    flex: 1;
+    overflow: hidden;
+}
+.navbar-right {
+    flex: 1;
+}
+.navbar-search {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 20px;
+}
+
+
+
