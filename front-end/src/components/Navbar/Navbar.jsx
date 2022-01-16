@@ -22,7 +22,7 @@ export default function Navbar(props) {
         <div className="navbar">
             <div className="navbar-left">
                 <Menu mode="horizontal">
-                    <Menu.Item key="icon">
+                    <Menu.Item key="icon" >
                         Icon
                     </Menu.Item>
                     <Menu.Item key="home">

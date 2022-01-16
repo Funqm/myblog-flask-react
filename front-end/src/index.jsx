@@ -2,28 +2,39 @@ import 'antd/dist/antd.css'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import {BrowserRouter, HashRouter, Link, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Link, Routes, Route } from 'react-router-dom'
 import Ping from './components/Ping';
 import App from './App';
 import Register from './routes/Register';
 import Login from './routes/Login';
+import Overview from './components/User/overview';
 import Profile from './routes/profile';
+import Home from './routes/home';
 import store from './store';
 import reportWebVitals from './reportWebVitals';
-
+import Followers from './components/User/followers'
+import Followeds from './components/User/followeds'
+import UserPosts from './components/Post/userPosts'
 
 
 ReactDOM.render(
   <Provider store={store}>
     <HashRouter>
-    <Routes>
-      <Route path="/" element={<App />}>
-        <Route path='register' element={<Register/>} />
-        <Route path='login' element={<Login />} />
-        <Route path='profile/:userId' element={<Profile />}></Route>
-      </Route>
-    </Routes>
-  </HashRouter>
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route path='register' element={<Register />} />
+          <Route path='login' element={<Login />} />
+          <Route path='profile/:userId' element={<Profile />}>
+            <Route index element={<Overview />}></Route>
+            <Route path='followers' element={<Followers />} />
+            <Route path='followeds' element={<Followeds />} />
+            <Route path='posts' element={<UserPosts />} />
+          </Route>
+          <Route index element={<Home />} />
+          <Route path="home" element={<Home />} />
+        </Route>
+      </Routes>
+    </HashRouter>
   </Provider>,
   document.getElementById('root')
 );

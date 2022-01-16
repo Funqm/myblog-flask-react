@@ -1,10 +1,11 @@
 import { useState } from "react"
-import { Layout  } from "antd"
+import { Layout, Row ,Col } from "antd"
 import { Route, Routes, Outlet, Link , useNavigate} from "react-router-dom"
 import Navbar from "./components/Navbar/Navbar"
 import Register from "./routes/Register"
 import Login from "./routes/Login"
 import styled from "styled-components"
+
 
 
 
@@ -22,7 +23,7 @@ export default function App(){
         </Header>
 
         <Content>
-        <Outlet />
+        <Row><Col span="20" offset="2"><Outlet /></Col></Row>
         </Content>
         </Layout>
     )

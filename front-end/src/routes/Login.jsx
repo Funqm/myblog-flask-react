@@ -43,7 +43,7 @@ export default function Login() {
                 dispatch(login())
                 message.info("登陆成功 !")
                 //重定向到主页或原来计划的
-                navigate(`/`)
+                navigate(`/home`)
 
             })
             .catch((error) => {

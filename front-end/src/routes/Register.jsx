@@ -24,7 +24,7 @@ export default function Register() {
   
   const onFinish = (values) => {
     const path = "/users"
-    const payload = form.getFieldsValue(true);
+    const payload = {...values};
     axios.post(path, payload)
       .then((response) => {
         //注册成功，重定向到登陆界面
