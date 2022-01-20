@@ -9,11 +9,11 @@ import axios from '../http';
 
 const Container = styled.div`
     height: 100vh;
-    background-color: pink;
     text-align: center;
     `
 const Title = styled.h1`
-    font-size: 5rem
+    font-size: 5rem;
+    margin-bottom: 100px
     `
 
 

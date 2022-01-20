@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 
 const Container = styled.div`
     height: 100vh;
-    background-color: pink;
+    background-color: transparent;
     text-align: center;
     `
 const Title = styled.h1`
@@ -62,6 +62,7 @@ export default function Login() {
 
     return (
         <Container>
+        <Title>Login</Title>
             <Form
                 name="basic"
                 form={form}
@@ -72,8 +73,9 @@ export default function Login() {
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
                 size="large"
+                style={{marginTop: "100px"}}
             >
-                <Title>Login</Title>
+                
                 <Form.Item
                     label="Username"
                     name="username"

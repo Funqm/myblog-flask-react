@@ -1,9 +1,9 @@
-from flask import request, jsonify, url_for, g
+from flask import request, jsonify, url_for, g, current_app
 from app.api import bp
 from app.api.auth import token_auth
 from app.api.errors import error_response, bad_request
 from app import db
-from app.models import Post
+from app.models import Post, Comment
 
 
 @bp.route('/posts', methods=['POST'])
@@ -43,7 +43,6 @@ def get_posts():
     
     data = Post.to_collection_dict(Post.query.order_by(Post.timestamp.desc()), page, per_page, 'api.get_posts')
     response = jsonify(data)
-    print("?????" , response)
     return response
 
 @bp.route('/posts/<int:id>', methods=['GET'])
@@ -80,7 +79,6 @@ def update_post(id):
     db.session.commit()
     return jsonify(post.to_dict())
 
-
 @bp.route('/posts/<int:id>', methods=['DELETE'])
 @token_auth.login_required
 def delete_post(id):
@@ -90,6 +88,27 @@ def delete_post(id):
         return error_response(403)
     db.session.delete(post)
     db.session.commit()
-    return '',
+    return '',204
+
+@bp.route('/posts/<int:id>/comments/', methods=['GET'])
+def get_post_comments(id):
+    '''返回当前文章下面的一级评论'''
+    post = Post.query.get_or_404(id)
+    page = request.args.get('page', 1, type=int)
+    per_page = min(
+        request.args.get(
+            'per_page', current_app.config['COMMENTS_PER_PAGE'], type=int), 100)
+    # 先获取一级评论
+    data = Comment.to_collection_dict(
+        post.comments.filter(Comment.parent==None).order_by(Comment.timestamp.desc()), page, per_page,
+        'api.get_post_comments', id=id)
+    # 再添加子孙到一级评论的 descendants 属性上
+    for item in data['items']:
+        comment = Comment.query.get(item['id'])
+        descendants = [child.to_dict() for child in comment.get_descendants()]
+        # 按 timestamp 排序一个字典列表
+        from operator import itemgetter
+        item['descendants'] = sorted(descendants, key=itemgetter('timestamp'))
+    return jsonify(data)
 
 

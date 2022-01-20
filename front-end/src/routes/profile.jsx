@@ -1,18 +1,23 @@
 import { Row, Col, Avatar, message, Button, Input } from "antd";
 import axios from "../http";
 import { useState, useEffect } from "react";
-import { NavLink,useOutletContext, useLocation, useNavigate, useParams, Outlet } from "react-router-dom";
+import { NavLink, useOutletContext, useLocation, useNavigate, useParams, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import moment from "moment";
 import { configureStore } from "@reduxjs/toolkit";
 
+const Container = styled.div`
+    height: 100vh;
+    margin-top: 50px;
+    `
 
 
 
 
 export default function Profile() {
     const authedUserId = useSelector(state => state.user.userId);
+    const isAuthed = useSelector(state => state.user.isAuthed)
     const [user, setUser] = useState({
         username: '',
         email: '',
@@ -30,13 +35,18 @@ export default function Profile() {
     let params = useParams();
     const navigate = useNavigate();
 
-    
+
     const [editState, setEditState] = useState(false);
     const [canEdit, setCanEdit] = useState(false);
 
     useEffect(() => {
-        if (authedUserId !== 0 && params.userId === 0) {
+        if (!isAuthed) {
+            navigate('/login');
+            return;
+        }
+        if (params.userId === 0) {
             navigate(`/profile/${authedUserId}`)
+            return;
         }
         const userId = params.userId;
         getUser(userId);
@@ -78,74 +88,89 @@ export default function Profile() {
             })
     }
 
-    function follow(){
+    function follow() {
         const path = `/follow/${params.userId}`
 
         axios.get(path)
-        .then(response => {
-            message.info('success follow');
-            navigate(`/profile/${params.userId}`)
-            //console.log(response);
-        })
-        .catch(error => {
-           // console.log(error);
-        })
+            .then(response => {
+                message.info('success follow');
+                navigate(`/profile/${params.userId}`)
+                //console.log(response);
+            })
+            .catch(error => {
+                // console.log(error);
+            })
     }
 
-    function unfollow(){
+    function unfollow() {
         const path = `/unfollow/${params.userId}`;
 
         axios.get(path)
-        .then(response => {
-            message.info("succes unfollow");
-            navigate(`/profile/${params.userId}`);
-        })
-        .catch(error => {
+            .then(response => {
+                message.info("succes unfollow");
+                navigate(`/profile/${params.userId}`);
+            })
+            .catch(error => {
 
-        })
+            })
     }
     return (
-        <Row justify="center">
-            <Col span="20" style={{ backgroundColor: "hotpink", fontSize: '20px' }}>
-               <Row>
-                   <Col> {canEdit ? editState ?
-                    (<div>
-                        <Button type='primary' onClick={() => submitEdit()}>保存</Button>
-                        <Button type='primary'>取消</Button>
-                    </div>)
-                    : <Button type='primary' onClick={() => setEditState(true)}>编辑</Button> : null}
-                    </Col>
-                    {params.userId != authedUserId ?
-                    <Col>
-                        {user.is_following ? 
-                        <Button type="primary" onClick={unfollow}>unfollow</Button>
-                        :<Button type="primary" onClick={follow}>follow</Button>
-                        }
-                    </Col> : null}
-               </Row>
-                <Row justify="center" style={{ padding: "20px 0 10px", borderBottom: "1px solid gray" }}>
-                    <Avatar size={128} shape="square" src={user._links.avatar}></Avatar>
-                </Row>
-                <Row justify="space-around">
-                    <Col>
-                        <NavLink to="">overview</NavLink>
-                    </Col>
-                    <Col>
-                        <NavLink to="followers">followers</NavLink>
-                    </Col>
-                    <Col>
-                        <NavLink to="followeds">followeds</NavLink>
-                    </Col>
-                    <Col>
-                        <NavLink to="posts">posts</NavLink>
-                    </Col>
+        <Container>
+            <Row justify="center" style={{ height: "100%" }}>
+                <Col span="20" style={{ backgroundColor: "#eaecec", fontSize: '20px', borderRadius: "5px" }}>
+                    <Row>
+                        <Col> {canEdit ? editState ?
+                            (<div>
+                                <Button type='primary' onClick={() => submitEdit()}>保存</Button>
+                                <Button type='primary'>取消</Button>
+                            </div>)
+                            : <Button type='primary' onClick={() => setEditState(true)}>编辑</Button> : null}
+                        </Col>
+                        {params.userId != authedUserId ?
+                            <Col>
+                                {user.is_following ?
+                                    <Button type="primary" onClick={unfollow}>unfollow</Button>
+                                    : <Button type="primary" onClick={follow}>follow</Button>
+                                }
+                            </Col> : null}
+                    </Row>
+                    <Row justify="center" style={{ padding: "20px 0 10px", }}>
+                        <Avatar size={128} shape="square" src={user._links.avatar}></Avatar>
+                    </Row>
+                    <Row justify="space-around" style={{ fontSize: "25px", margin: "20px 0 0", borderBottom: "1px solid gray" }}>
+                        <Col>
+                            <NavLink to="" 
+                                style={isActive => ({
+                                    color: !isActive ? "white" : "#79396d"
+                                })}>overview</NavLink>
+                        </Col>
+                        <Col>
+                            <NavLink to="followers" 
+                             style={isActive => ({
+                                    color: !isActive ? "white" : "#79396d"
+                                })} 
+                            >followers</NavLink>
+                        </Col>
+                        <Col>
+                            <NavLink to="followeds" 
+                             style={isActive => ({
+                                    color: !isActive ? "white" : "#79396d"
+                                })}>followeds</NavLink>
+                        </Col>
+                        <Col>
+                            <NavLink to="posts" 
+                             style={isActive => ({
+                                    color: !isActive ? "white" : "#79396d"
+                                })}>posts</NavLink>
+                        </Col>
 
-                </Row>
-               
-                <Outlet context={{user, setUser, editState, userId: params.userId}}/>
-            </Col>
-            <Col></Col>
+                    </Row>
 
-        </Row>
+                    <Outlet context={{ user, setUser, editState, userId: params.userId }} />
+                </Col>
+                <Col></Col>
+
+            </Row>
+        </Container>
     )
 }

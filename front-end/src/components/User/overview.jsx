@@ -4,7 +4,9 @@ import { useEffect } from "react";
 import { useOutletContext } from "react-router"
 
 const infoContainerStyle = {
-    margin: "10px 0"
+    margin: "10px 0",
+    backgroundColor:  "grey",
+    padding: "0 20px"
 }
 export default function Overview() {
     const {user, setUser, editState} = useOutletContext();
@@ -12,7 +14,7 @@ export default function Overview() {
     return (
         <div>{
             user ?
-                <div>
+                <div style={{padding: "0 40px"}}>
 
                     <Row gutter={10} style={infoContainerStyle} >
                         <Col span={8} offset={2}>USER: </Col>

@@ -15,6 +15,7 @@ import reportWebVitals from './reportWebVitals';
 import Followers from './components/User/followers'
 import Followeds from './components/User/followeds'
 import UserPosts from './components/Post/userPosts'
+import Post from './routes/post'
 
 
 ReactDOM.render(
@@ -30,6 +31,7 @@ ReactDOM.render(
             <Route path='followeds' element={<Followeds />} />
             <Route path='posts' element={<UserPosts />} />
           </Route>
+          <Route path="posts/:postId" element={<Post />} />
           <Route index element={<Home />} />
           <Route path="home" element={<Home />} />
         </Route>

@@ -22,12 +22,13 @@ axios.interceptors.response.use(function (response) {
    
     return response
 }, function(error) {
-    switch (error.response.status) {
+    switch (error.response && error.response.status) {
         case 401: 
             //清除token 以及认证状态
             //？？
             //跳转到登陆页面
             message.info("401: 认证已经失效，请先登陆")
+            window.localStorage.removeItem('myblog-token')
             //navigate('/login')
             break;
         case 404:
