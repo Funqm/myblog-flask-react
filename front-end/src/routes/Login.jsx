@@ -101,7 +101,7 @@ export default function Login() {
                 <p>New User?<Link to="/register">Click to Register</Link></p>
                 <p>
                     Forgot Your Password?
-                    <a href="#">Click to Reset It</a>
+                    <a href="#" onClick={()=>{message.info("还没做呢 ：）")}}>Click to Reset It</a>
                 </p>
             </Form>
 

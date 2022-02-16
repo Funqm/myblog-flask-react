@@ -3,7 +3,7 @@ import { HomeFilled, FireFilled, CompassFilled, MailFilled, MessageFilled, Login
 import { useLocation, useNavigate, Link, NavLink } from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux'
 import { login, logout } from "../../store/userSlice"
-import { Menu, Layout, Input, Row, Col, Avatar, Dropdown } from 'antd'
+import { Menu, Layout, Input, Row, Col, Avatar, Dropdown, message } from 'antd'
 import styled from 'styled-components'
 import axios from '../../http'
 
@@ -15,13 +15,17 @@ const SearchContainer = styled.div`
 
 const iconStlye1 = {
     fontSize: "30px",
-    color: "#884077"
-}
+    color: "#884077",
 
+}
 const iconStlye2 = {
     fontSize: "20px",
-    color: "#884077"
+    color: "#884077",
 }
+const cursor = {
+    cursor: "pointer"
+}
+
 
 const { Header } = Layout
 const { Search } = Input
@@ -50,7 +54,9 @@ export default function Navbar(props) {
         .catch(error => {
             console.log(error);
         })
-
+    }
+    function haimeizuone(){
+        message.info("还没做呢：）")
     }
 
     const menu = (
@@ -83,7 +89,7 @@ export default function Navbar(props) {
                 <SearchContainer>
                     <Search
 
-                        placeholder={isAuthed.toString()}
+                        placeholder="还没做呢：）"
                         allowClear
                         enterButton="Search"
                         size="large"
@@ -94,12 +100,12 @@ export default function Navbar(props) {
             <Col span="10" offset="2">
                 <Row >
                     <Col span="4" style={iconStlye1}><HomeFilled onClick={() => navigate("/")}></HomeFilled></Col>
-                    <Col span="4" style={iconStlye1}><CompassFilled></CompassFilled></Col>
-                    <Col span="4" style={iconStlye1}><MailFilled></MailFilled></Col>
-                    <Col span="4" style={iconStlye1}><MessageFilled></MessageFilled></Col>
+                    <Col span="4" style={iconStlye1}><CompassFilled style={cursor} onClick={haimeizuone}></CompassFilled></Col>
+                    <Col span="4" style={iconStlye1}><MailFilled style={cursor} onClick={haimeizuone}></MailFilled></Col>
+                    <Col span="4" style={iconStlye1}><MessageFilled style={cursor} onClick={haimeizuone}></MessageFilled></Col>
                     <Col span="4" style={iconStlye1}>
                         <Dropdown overlay={menu} arrow style={{fontSize: "30px"}}>
-                            <Avatar src={authedUser ? authedUser._links.avatar : null}></Avatar>
+                            <Avatar src={authedUser ? authedUser._links.avatar : null} style={{cursor: "pointer"}}></Avatar>
                         </Dropdown>
                     </Col>
                 </Row>

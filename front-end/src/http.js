@@ -6,7 +6,7 @@ import { message } from 'antd';
 
 
 axios.defaults.timeout = 5000;
-axios.defaults.baseURL = 'http://localhost:5000/api'
+axios.defaults.baseURL = 'http://123.57.22.30:5000//api'
 
 axios.interceptors.request.use(function(config) {
     const token = window.localStorage.getItem('myblog-token')
@@ -27,7 +27,7 @@ axios.interceptors.response.use(function (response) {
             //清除token 以及认证状态
             //？？
             //跳转到登陆页面
-            message.info("401: 认证已经失效，请先登陆")
+            //message.info("401: 认证已经失效，请先登陆")
             window.localStorage.removeItem('myblog-token')
             //navigate('/login')
             break;

@@ -13,6 +13,10 @@ const PostTitle = styled.div`
     font-size: 30px;
     height: 40px;
     font-weight: 500;
+    width: 90%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis
 `
 const PostDateInfo = styled.div`
     font-size: 12px;
@@ -23,6 +27,7 @@ const PostSummary = styled.p`
     height: 100px;
     background-color: #efe9ea;
     border-radius: 5px;
+    padding: 5px
     `
 const DeleteButton = styled.button`
 `
@@ -45,23 +50,27 @@ export default function PostCard({ post }) {
         .catch(error => {
             console.error(error)
         })
-        
+    }
+
+    function goProfile(id){
+        navigate('/profile/' + id)
     }
 
     return (
         <Row style={{ height: '200px', margin: "10px 0", backgroundColor: "white", borderRadius: "5px", padding: "0 10px" }}>
-            <Col span="3" offset="0" style={{ textAlign: "center" }}>
-                <Avatar src={post.author._links.avatar} size={60} style={{ margin: "10px 0" }} shape="square"></Avatar>
+            <Col span="3" offset="0" style={{ textAlign: "center", marginTop: 15 }}>
+                <Avatar src={post.author._links.avatar} size={60} style={{ margin: "10px 0" }} shape="square" onClick={()=>goProfile(post.author.id)} style={{cursor: "pointer"}}></Avatar>
                 <h4>{post.author.username} </h4>
             </Col>
             <Col span="21">
-                <PostTitle>{post.title}
-                    {post.author.id === userId
+            {post.author.id === userId
                         ?<Popconfirm title="确定删除这篇博文？" onConfirm={() =>deletePost(post.id)} placement="rightTop">
                         <Button danger size="small" style={{ float: 'right', marginTop: '5px' }} >删除</Button>
                         </Popconfirm> 
                         : null}
+                <PostTitle>{post.title}
                 </PostTitle>
+               
                 <PostDateInfo> {moment(post.time_samp).format('LLL')}</PostDateInfo>
                 <PostSummary>{post.summary}</PostSummary>
                 <Row justify="end" gutter="20" style={{ fontSize: '18px', color: "#773a7b" }}>

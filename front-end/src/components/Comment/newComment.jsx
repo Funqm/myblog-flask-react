@@ -29,7 +29,9 @@ export default function NewComment({ postId, parent, setShowEditor }) {
             .then(response => {
                 console.log(response.data);
                 setComment('')
-                setShowEditor(false);
+                if(setShowEditor){
+                    setShowEditor(false);
+                }
                 navigate(`/posts/${postId}`)
 
             })

@@ -1,7 +1,7 @@
 import { message, Layout, Col, Row, Dropdown, Menu } from "antd"
 import axios from "../http";
 import { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import NewPost from "../components/Post/newPost";
 import Pagination from "../components/Pagation";
 import styled from "styled-components";
@@ -15,14 +15,16 @@ const PanelBody = styled.div``
 const { Content } = Layout;
 export default function Home() {
     const [posts, setPosts] = useState('')
-    
-
     const isAuthed = useSelector(state => state.user.isAuthed)
-
+    const navigate = useNavigate()
     const location = useLocation()
 
     useEffect(() => {
         getPosts();
+        if(!isAuthed){
+            message.info("请先登陆")
+            //navigate('/login')
+        }
     }, [location])
    
 

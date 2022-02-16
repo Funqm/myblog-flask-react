@@ -19,6 +19,7 @@ const PostContainer = styled.div`
 const Title = styled.h1`
     font-size: 40px;11
     margin: 10px;
+  
 `
 const Info = styled.p`
     border-bottom: solid 1px #fff;

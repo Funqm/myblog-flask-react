@@ -7,6 +7,6 @@ const Title = styled.h1`
 export default function PostDetial(){
     return(
         <Row></Row>
-        <
+        
     )
 }
